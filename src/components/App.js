@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route} from 'react-router-dom';
+import { Router, Route} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 import StreamCreate from './streams/StreamCreate';
@@ -10,22 +10,23 @@ import StreamShow from './streams/StreamShow';
 
 import Header from './Header';
 import LoaderComponent from './Loader';
+import createBrowserHistory from '../history';
 
 class App extends React.Component {
     render() {
         return (
             <div className="ui container">
-                <BrowserRouter>
+                <Router history={createBrowserHistory}>
                     <div>
                     <Header />
                     <LoaderComponent isLoading={this.props.isLoading}/>
                     <Route path="/" exact component= {StreamList} />
-                    <Route path="/stream/new" component= {StreamCreate} /> 
-                    <Route path="/stream/edit" component= {StreamEdit} /> 
-                    <Route path="/stream/delete" component= {StreamDelete} /> 
-                    <Route path="/stream/show" component= {StreamShow} /> 
+                    <Route path="/streams/new" component= {StreamCreate} /> 
+                    <Route path="/streams/edit/:id" component= {StreamEdit} /> 
+                    <Route path="/streams/delete" component= {StreamDelete} /> 
+                    <Route path="/streams/show" component= {StreamShow} /> 
                     </div>
-                </BrowserRouter>
+                </Router>
             </div>
         )
     }    

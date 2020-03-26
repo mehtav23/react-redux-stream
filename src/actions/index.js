@@ -1,4 +1,5 @@
 import streams from '../apis/streams';
+import createBrowserHistory from '../history';
 
 import {
         SIGN_IN, SIGN_OUT, IS_LOADING_OFF, IS_LOADING_ON,
@@ -36,10 +37,11 @@ export const isLoadingOff = () => {
 }
 // arrow function return thunk function
 export const createStream = (formValues) => {
-    return async (dispatch) =>{
-        const response = await streams.post('/streams', formValues);
-        
+    return async (dispatch, getState) =>{
+        const { userId } = getState().auth;
+        const response = await streams.post('/streams', {...formValues, userId});
         dispatch({type: CREATE_STREAM, payload: response.data});
+        createBrowserHistory.push('/');
     }
 }
 
@@ -61,9 +63,10 @@ export const fetchStream = (id) => {
 
 export const editStream = (id, formValues) => {
     return async (dispatch) => {
-        const response = await streams.put(`/streams/${id}`, formValues);
+        const response = await streams.patch(`/streams/${id}`, formValues);
 
         dispatch({type: EDIT_STREAM, payload: response.data});
+        createBrowserHistory.push('/');
     }
 }
 
